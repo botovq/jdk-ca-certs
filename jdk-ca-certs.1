@@ -1,0 +1,62 @@
+.\" $OpenBSD$
+.\"
+.\" Copyright (c) 2026 Theo Buehler <tb@openbsd.org>
+.\"
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.\"
+.Dd $Mdocdate$
+.Dt JDK-CA-CERTS 1
+.Os
+.Sh NAME
+.Nm jdk-ca-certs
+.Nd convert a certificate bundle into a JDK-compatible store
+.Sh SYNOPSIS
+.Nm
+.Ar in-cert.pem
+.Ar out-jdk-cacerts
+.Sh DESCRIPTION
+The
+.Nm
+utility converts a PEM-formatted certificate bundle into a certificate store
+that can be used by the Java Development Kit
+.Pq JDK .
+The JDK uses a standard PKCS#12 file whose
+.Fa certBag Ns No s
+have an Oracle-specific key usage attribute.
+.Sh EXIT STATUS
+The
+.Nm
+utility exits zero on success, and >0 if an error occurs.
+.Sh SEE ALSO
+.Xr openssl 1 ,
+.Xr crypto 3 ,
+.Xr PEM_X509_INFO_read_bio 3
+.Sh STANDARDS
+.Rs
+.%T Internet X.509 Public Key Infrastructure Certificate and CRL Profile
+.%R RFC 5280
+.Re
+.Pp
+.Rs
+.%T PKCS #12: Personal Information Exchange Syntax v1.1
+.%R RFC 7292
+.Re
+.Pp
+.Rs
+.%T Textual Encodings of PKIX, PKCS, and CMS Structures
+.%R RFC 7468
+.Re
+.Sh BUGS
+Diagnostics are lacking and the code is not written to be portable
+to operating systmes other than
+.Ox .
