@@ -385,8 +385,10 @@ main(int argc, const char *argv[])
 	}
 	file = NULL;
 
-	if (rename(outtmp, outfile) == -1)
+	if (rename(outtmp, outfile) == -1) {
 		warn("rename");
+		goto err;
+	}
 
 	free(data);
 	free(outtmp);
