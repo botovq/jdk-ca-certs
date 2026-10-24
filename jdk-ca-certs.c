@@ -14,6 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <sys/stat.h>
+
 #include <err.h>
 #include <fcntl.h>
 #include <libgen.h>
@@ -267,7 +269,7 @@ main(int argc, const char *argv[])
 	certpem = argv[1];
 	outfile = argv[2];
 
-	if (pledge("stdio rpath wpath cpath unveil", NULL) == -1)
+	if (pledge("stdio rpath wpath cpath fattr unveil", NULL) == -1)
 		err(1, "pledge");
 
 	if (asprintf(&outtmp, "%s.XXXXXXXXXX", outfile) == -1)
@@ -279,6 +281,10 @@ main(int argc, const char *argv[])
 
 	if ((fd = mkostemp(outtmp, O_CLOEXEC)) == -1)
 		err(1, "mkostemp");
+	if (fchmod(fd, 0644) == -1) {
+		unlinkat(fd, outdir, 0);
+		err(1, "fdopen");
+	}
 	if ((file = fdopen(fd, "w")) == NULL) {
 		unlinkat(fd, outdir, 0);
 		err(1, "fdopen");
@@ -292,8 +298,9 @@ main(int argc, const char *argv[])
 		warn("unveil %s", outfile);
 		goto err;
 	}
-	if (unveil(NULL, NULL) == -1) {
-		warn("unveil");
+
+	if (pledge("stdio rpath wpath cpath", NULL) == -1) {
+		warn("pledge");
 		goto err;
 	}
 
