@@ -1,2 +1,5 @@
+**/jdk-ca-certs
+**/*.d
+**/*.o
 **/obj
 **/tags
