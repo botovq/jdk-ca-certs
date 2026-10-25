@@ -219,11 +219,13 @@ cbb_add_safeBag_from_cert(CBB *cbb, X509 *x509)
 	if (!CBB_add_asn1(&child, &bagValue,
 	    CBS_ASN1_CONTEXT_SPECIFIC | CBS_ASN1_CONSTRUCTED | 0x00))
 		goto err;
-	cbb_add_certBag_from_cert(&bagValue, x509);
+	if (!cbb_add_certBag_from_cert(&bagValue, x509))
+		goto err;
 
 	if (!CBB_add_asn1(&child, &bagAttributes, CBS_ASN1_SET))
 		goto err;
-	cbb_add_trustedKeyUsage(&bagAttributes);
+	if (!cbb_add_trustedKeyUsage(&bagAttributes))
+		goto err;
 
 	if (!CBB_finish(&safeBag, &data, &data_len))
 		goto err;
