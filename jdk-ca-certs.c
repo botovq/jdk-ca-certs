@@ -350,6 +350,10 @@ main(int argc, const char *argv[])
 	if (!CBB_add_asn1(&outercontent, &AuthenticatedSafe, CBS_ASN1_SEQUENCE))
 		goto err;
 
+	/*
+	 * RFC 7292, section 4.1: An AuthenticatedSafe contains a sequence of
+	 * ContentInfo values.
+	 */
 	if (!CBB_add_asn1(&AuthenticatedSafe, &contentInfo, CBS_ASN1_SEQUENCE))
 		goto err;
 	if (!cbb_add_nid(&contentInfo, NID_pkcs7_data))
@@ -361,9 +365,11 @@ main(int argc, const char *argv[])
 	if (!CBB_add_asn1(&content, &contentValue, CBS_ASN1_OCTETSTRING))
 		goto err;
 
+	/* RFC 7292, section 4.2: SafeContents ::= SEQUENCE OF SafeBag. */
 	if (!CBB_add_asn1(&contentValue, &safeContents, CBS_ASN1_SEQUENCE))
 		goto err;
 
+	/* Now walk the certs and add them as safeBags. */
 	for (i = 0; i < sk_X509_INFO_num(certs); i++) {
 		X509_INFO *info = sk_X509_INFO_value(certs, i);
 
