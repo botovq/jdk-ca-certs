@@ -285,7 +285,7 @@ main(int argc, const char *argv[])
 		err(1, "mkostemp");
 	if (fchmod(fd, 0644) == -1) {
 		unlinkat(fd, outdir, 0);
-		err(1, "fdopen");
+		err(1, "fchmod");
 	}
 	if ((file = fdopen(fd, "w")) == NULL) {
 		unlinkat(fd, outdir, 0);
