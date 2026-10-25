@@ -281,6 +281,15 @@ main(int argc, const char *argv[])
 	if ((outdir = dirname(outtmp)) == NULL)
 		err(1, "dirname");
 
+	if (unveil(certpem, "r") == -1) {
+		warn("unveil %s", certpem);
+		goto err;
+	}
+	if (unveil(outdir, "rwc") == -1) {
+		warn("unveil %s", outfile);
+		goto err;
+	}
+
 	if ((fd = mkostemp(outtmp, O_CLOEXEC)) == -1)
 		err(1, "mkostemp");
 	if (fchmod(fd, 0644) == -1) {
@@ -290,15 +299,6 @@ main(int argc, const char *argv[])
 	if ((file = fdopen(fd, "w")) == NULL) {
 		unlinkat(fd, outdir, 0);
 		err(1, "fdopen");
-	}
-
-	if (unveil(certpem, "r") == -1) {
-		warn("unveil %s", certpem);
-		goto err;
-	}
-	if (unveil(outdir, "rwc") == -1) {
-		warn("unveil %s", outfile);
-		goto err;
 	}
 
 	if (pledge("stdio rpath wpath cpath", NULL) == -1) {
