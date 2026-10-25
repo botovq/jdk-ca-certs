@@ -39,7 +39,7 @@
  * {joint-iso-itu-t(2) country(16) us(840) organization(1)
  *  oracle(113894) jdk(746875) crypto(1) id-at-trustedKeyUsage(1)}
  */
-const uint8_t trustedKeyUsage[] = {
+static const uint8_t trustedKeyUsage[] = {
 	0x06, 0x0c, 0x60, 0x86, 0x48, 0x01, 0x86, 0xf9,
 	0x66, 0xad, 0xca, 0x7b, 0x01, 0x01,
 };
