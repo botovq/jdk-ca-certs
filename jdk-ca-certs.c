@@ -281,14 +281,10 @@ main(int argc, const char *argv[])
 	if ((outdir = dirname(outtmp)) == NULL)
 		err(1, "dirname");
 
-	if (unveil(certpem, "r") == -1) {
-		warn("unveil %s", certpem);
-		goto err;
-	}
-	if (unveil(outdir, "rwc") == -1) {
-		warn("unveil %s", outfile);
-		goto err;
-	}
+	if (unveil(certpem, "r") == -1)
+		err(1, "unveil %s", certpem);
+	if (unveil(outdir, "rwc") == -1)
+		err(1, "unveil %s", outfile);
 
 	if ((fd = mkostemp(outtmp, O_CLOEXEC)) == -1)
 		err(1, "mkostemp");
