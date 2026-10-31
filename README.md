@@ -47,7 +47,7 @@ PEM\_X509\_INFO\_read\_bio(3)
 # BUGS
 
 Diagnostics are lacking and the code is not written to be portable
-to operating systmes other than
+to operating systems other than
 OpenBSD.
 
-OpenBSD 8.0 - October 24, 2026 - JDK-CA-CERTS(1)
+OpenBSD 8.0 - October 31, 2026 - JDK-CA-CERTS(1)
